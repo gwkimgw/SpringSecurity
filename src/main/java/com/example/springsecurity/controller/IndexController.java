@@ -21,9 +21,9 @@ public class IndexController {
         return "admin";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+    @GetMapping("/loginForm")
+    public String loginForm() {
+        return "loginForm";
     }
 
     @GetMapping("/manager")
@@ -31,9 +31,9 @@ public class IndexController {
         return "manager";
     }
 
-    @GetMapping("/join")
-    public String join() {
-        return "join";
+    @GetMapping("/joinForm")
+    public String joinForm() {
+        return "joinForm";
     }
 
     @GetMapping("/joinProc")
