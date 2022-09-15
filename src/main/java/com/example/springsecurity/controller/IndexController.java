@@ -1,7 +1,9 @@
 package com.example.springsecurity.controller;
 
+import com.example.springsecurity.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -36,8 +38,9 @@ public class IndexController {
         return "joinForm";
     }
 
-    @GetMapping("/join")
-    public @ResponseBody String join() {
+    @PostMapping("/join")
+    public @ResponseBody String join(User user) {
+        System.out.println(user);
         return "join";
     }
 }
