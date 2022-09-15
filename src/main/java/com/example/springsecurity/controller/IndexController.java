@@ -1,59 +1,58 @@
 package com.example.springsecurity.controller;
 
+import java.util.List;
+
 import com.example.springsecurity.model.User;
 import com.example.springsecurity.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
 
-@Controller
+@RestController
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class IndexController {
+
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping({"", "/"})
-    public String index() {
-        return "index";
+    @GetMapping("home")
+    public String home() {
+        return "<h1>home</h1>";
     }
 
-    @GetMapping("/user")
-    public String user() {
-        return "user";
+    @GetMapping("user")
+    public String user(Authentication authentication) {
+//        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+//        System.out.println("principal : " + principal.getUser().getId());
+//        System.out.println("principal : " + principal.getUser().getUsername());
+//        System.out.println("principal : " + principal.getUser().getPassword());
+
+        return "<h1>user</h1>";
     }
 
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
+    // 매니저 혹은 어드민이 접근 가능
+    @GetMapping("manager/reports")
+    public String reports() {
+        return "<h1>reports</h1>";
     }
 
-    @GetMapping("/loginForm")
-    public String loginForm() {
-        return "loginForm";
+    // 어드민이 접근 가능
+    @GetMapping("admin/users")
+    public List<User> users() {
+        return userRepository.findAll();
     }
 
-    @GetMapping("/manager")
-    public String manager() {
-        return "manager";
-    }
-
-    @GetMapping("/joinForm")
-    public String joinForm() {
-        return "joinForm";
-    }
-
-    @PostMapping("/join")
+    @PostMapping("join")
     public String join(@RequestBody User user) {
-        user.setRole("ROLE-USER");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRole("ROLE_USER");
         userRepository.save(user);
-        return "redirect:/loginForm";
+        return "joined";
     }
 }
