@@ -46,7 +46,9 @@ public class IndexController {
 
     @PostMapping("/join")
     public @ResponseBody String join(User user) {
-        System.out.println(user);
+        user.setRole("ROLE-USER");
+
+        userRepository.save(user);
         return "join";
     }
 }
